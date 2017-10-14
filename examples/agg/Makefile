@@ -34,23 +34,11 @@
 SPDK_ROOT_DIR := $(abspath $(CURDIR)/../..)
 include $(SPDK_ROOT_DIR)/mk/spdk.common.mk
 
-CFLAGS += $(ENV_CFLAGS) -I.
-ifeq ($(CONFIG_VTUNE),y)
-CFLAGS += -I$(VTUNE_SOURCE_DIR)/include -I$(VTUNE_SOURCE_DIR)/sdk/src/ittnotify
-endif
+DIRS-y += agg_test
 
-C_SRCS = bdev.c scsi_nvme.c
-C_SRCS-$(CONFIG_VTUNE) += vtune.c
+.PHONY: all clean $(DIRS-y)
 
-LIBNAME = bdev
+all: $(DIRS-y)
+clean: $(DIRS-y)
 
-DIRS-y += error gpt lvol malloc null nvme rpc split agg
-
-ifeq ($(OS),Linux)
-DIRS-y += aio virtio
-DIRS-$(CONFIG_NVML) += pmem
-endif
-
-DIRS-$(CONFIG_RBD) += rbd
-
-include $(SPDK_ROOT_DIR)/mk/spdk.lib.mk
+include $(SPDK_ROOT_DIR)/mk/spdk.subdirs.mk

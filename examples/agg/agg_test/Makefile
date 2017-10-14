@@ -1,6 +1,4 @@
 #
-#  BSD LICENSE
-#
 #  Copyright (c) Intel Corporation.
 #  All rights reserved.
 #
@@ -31,26 +29,28 @@
 #  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-SPDK_ROOT_DIR := $(abspath $(CURDIR)/../..)
+SPDK_ROOT_DIR := $(abspath $(CURDIR)/../../..)
 include $(SPDK_ROOT_DIR)/mk/spdk.common.mk
+include $(SPDK_ROOT_DIR)/mk/spdk.app.mk
+include $(SPDK_ROOT_DIR)/mk/spdk.modules.mk
 
-CFLAGS += $(ENV_CFLAGS) -I.
-ifeq ($(CONFIG_VTUNE),y)
-CFLAGS += -I$(VTUNE_SOURCE_DIR)/include -I$(VTUNE_SOURCE_DIR)/sdk/src/ittnotify
-endif
+APP = agg_test
 
-C_SRCS = bdev.c scsi_nvme.c
-C_SRCS-$(CONFIG_VTUNE) += vtune.c
+C_SRCS := agg_test.c
 
-LIBNAME = bdev
+SPDK_LIB_LIST = event_bdev event_copy
+SPDK_LIB_LIST += blobfs blob bdev vbdev_agg blob_bdev copy event util conf trace \
+		log jsonrpc json rpc
 
-DIRS-y += error gpt lvol malloc null nvme rpc split agg
+LIBS += $(COPY_MODULES_LINKER_ARGS) $(BLOCKDEV_MODULES_LINKER_ARGS)
+LIBS += $(SPDK_LIB_LINKER_ARGS) $(ENV_LINKER_ARGS)
 
-ifeq ($(OS),Linux)
-DIRS-y += aio virtio
-DIRS-$(CONFIG_NVML) += pmem
-endif
+all : $(APP)
 
-DIRS-$(CONFIG_RBD) += rbd
+$(APP) : $(OBJS) $(SPDK_LIB_FILES)
+	$(LINK_C)
 
-include $(SPDK_ROOT_DIR)/mk/spdk.lib.mk
+clean :
+	$(CLEAN_C) $(APP)
+
+include $(SPDK_ROOT_DIR)/mk/spdk.deps.mk
