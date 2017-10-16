@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f1e0892_a2dfe995",
+        "filename": "lib/bdev/agg/vbdev_agg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 1011222
+      },
+      "writtenOn": "2017-10-16T17:44:20Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be !base_bdev-\u003efn_table-\u003eio_type_supported?",
+      "revId": "737ae30c99c80e1bc1d13e535b5a1d9a411ffa8c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f9c8f87f_7fc97ca7",
+        "filename": "lib/bdev/agg/vbdev_agg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1011222
+      },
+      "writtenOn": "2017-10-16T17:44:20Z",
+      "side": 1,
+      "message": "This assumes that you will always get the bdev examine notifications in the same order.  This is not guaranteed.  For example, first time you may get Nvme0n1 and then Nvme1n1.  Next time you may get Nvme1n1 then Nvme0n1.  The nvme driver initializes the SSDs in parallel, so it is possible (even likely) that the SSDs may initialize in different amounts of time.",
+      "revId": "737ae30c99c80e1bc1d13e535b5a1d9a411ffa8c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93d166ce_82cbc599",
+        "filename": "lib/bdev/agg/vbdev_agg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 1011222
+      },
+      "writtenOn": "2017-10-16T17:44:20Z",
+      "side": 1,
+      "message": "these should probably be |\u003d.  If only one device needs aligned buffers, then you must report that the aggregated device always needs aligned buffers.\n\nSame for write_cache.",
+      "revId": "737ae30c99c80e1bc1d13e535b5a1d9a411ffa8c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24c7da73_25654540",
+        "filename": "lib/bdev/agg/vbdev_agg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 806,
+      "author": {
+        "id": 1011222
+      },
+      "writtenOn": "2017-10-16T17:44:20Z",
+      "side": 1,
+      "message": "This is only returning space for one io_channel - but you need one for each device in the aggregated bdev.",
+      "revId": "737ae30c99c80e1bc1d13e535b5a1d9a411ffa8c",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
